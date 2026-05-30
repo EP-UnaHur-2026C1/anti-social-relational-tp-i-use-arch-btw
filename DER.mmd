@@ -1,0 +1,44 @@
+---
+title: Anti Social Net
+---
+erDiagram
+    USER ||--o{ POST : "publica"
+    USER ||--o{ COMMENT : "escribe"
+    POST ||--o{ POST_IMAGES : "contiene"
+    POST ||--o{ COMMENT : "recibe"
+    POST }|--|{ TAG : "tiene asignado"
+
+    USER {
+        string nickName PK
+        string email UK
+        string name
+        string surname
+        int followers
+    }
+
+    POST {
+        int id PK
+        string user_nickName FK
+        string description
+        string dateTime
+    }
+
+    POST_IMAGES {
+        int id PK
+        int post_id FK
+        string url_image
+    }
+
+    COMMENT {
+        int id PK
+        string user_nickName FK
+        int post_id FK
+        string content
+        string dateTime
+        boolean visible
+    }
+
+    TAG {
+        int id PK
+        string name UK
+    }
