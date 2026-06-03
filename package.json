@@ -2,7 +2,7 @@
     "name": "anti-social",
     "version": "1.0.0",
     "description": "UnaHur anti-social net - Trabajo Práctico",
-    "main": "index.js",
+    "main": "main.js",
     "scripts": {
         "dev": "nodemon src/main.js",
         "test": "echo \"Error: no test specified\" && exit 1",
