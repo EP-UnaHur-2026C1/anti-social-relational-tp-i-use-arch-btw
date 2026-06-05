@@ -1,32 +1,25 @@
-const userService = require('../service/userService');
+const { User} = require('../models');
 
-const createUser = async (req, res) => {
+const getAllUsers = async (req, res) => {
     try {
-        const userData = req.body;
-        const newUser = await userService.createUser(userData);
+        const users = await User.findAll();
 
-        return res.status(201).json({
-            message: '✅ Usuario creado con éxito.',
-            data: newUser,
-        });
-    } catch (error) {
-        if (error.message.includes('ya están registrados')) {
-            return res.status(409).json({ error: error.message });
-        }
-        console.error(error);
-        return res.status(500).json({ error: 'Hubo un error en el servidor.' });
-    }
-};
-
-const getUsers = async (req, res) => {
-    try {
-        const users = await userService.getAllUsers();
         res.status(200).json(users);
-    } catch (err) {
-        return res
-            .status(500)
-            .json({ error: 'Error al obtener a los usuarios.' });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al obtener usuarios.',
+            error: error.message,
+        });
     }
 };
 
-module.exports = { createUser, getUsers };
+const getUserByNickName = async (req, res) => {
+    try {
+        
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al obtener usuario.',
+            error: error.message,
+        });
+    }
+}
