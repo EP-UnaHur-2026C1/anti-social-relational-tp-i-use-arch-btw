@@ -1,147 +1,125 @@
-const { User} = require('../models');
-//extra 
-const getUserPosts = async (req, res) => {
-    try {
-        const user = await User.findByPk(req.params.nickName, {
-            include: 'posts',
-        });
+const userService = require('../service/userService');
 
-        if (!user) {
-            return res.status(404).json({
-                message: 'Usuario no encontrado'
-            });
+const createUser = async (req, res) => {
+    try {
+        const userData = req.body;
+        const newUser = await userService.createUser(userData);
+
+        return res.status(201).json({
+            message: '✅ Usuario creado con éxito.',
+            data: newUser,
+        });
+    } catch (error) {
+        if (error.message.includes('ya están registrados')) {
+            return res.status(409).json({ error: error.message });
         }
 
-        res.status(200).json(user.posts);
-
-    } catch (error) {
-        res.status(500).json({
-            message: 'Error al obtener posts',
-            error: error.message,
+        console.error(error);
+        return res.status(500).json({
+            error: 'Hubo un error en el servidor.',
         });
     }
-}
+};
 
-const getUserComments = async (req, res) => {
+const getUsers = async (req, res) => {
     try {
-        const user = await User.findByPk(req.params.nickName, {
-            include: 'comments',
-        });
-        
-        if(!user) {
-            return res.status(404).json({
-                message: 'Usuario no encontrado'
-            });
-        }
-
-        res.status(200).json(user.comments);
-        
+        const users = await userService.getAllUsers();
+        return res.status(200).json(users);
     } catch (error) {
-        res.status(500).json({
-            message: 'Error al obtener comments',
-            error: error.message,
-        });
-    }
-}
-
-//CRUD
-const getAllUsers = async (req, res) => {
-    try {
-        const users = await User.findAll();
-
-        res.status(200).json(users);
-    } catch (error) {
-        res.status(500).json({
-            message: 'Error al obtener usuarios.',
-            error: error.message,
+        return res.status(500).json({
+            error: 'Error al obtener a los usuarios.',
         });
     }
 };
 
 const getUserByNickName = async (req, res) => {
     try {
-        const user = await User.findByPk(req.params.nickName);
-
-        if (!user) {
-            return res.status(404).json({
-                message: 'Usuario no encontrado',
-            });
+        const user = await userService.getUserByNickName(req.params.nickName);
+        return res.status(200).json(user);
+    } catch (error) {
+        if (error.message.includes('Usuario no encontrado')) {
+            return res.status(404).json({ error: error.message });
         }
 
-        res.status(200).json(user);
-
-    } catch (error) {
-        res.status(500).json({
-            message: 'Error al obtener usuario.',
-            error: error.message,
-        });
-    }
-};
-
-const createUser = async (req, res) => {
-    try {
-        const user = await User.create(req.body);
-
-        res.status(201).json(user);
-    } catch(error) {
-        res.status(500).json({
-            message: 'Error al crear usuario.',
-            error: error.message,
+        return res.status(500).json({
+            error: 'Error al obtener usuario.',
         });
     }
 };
 
 const updateUser = async (req, res) => {
     try {
-        const user = await User.findByPk(req.params.nickName);
+        const updatedUser = await userService.updateUser(
+            req.params.nickName,
+            req.body
+        );
 
-        if(!user) {
-            return res.status(404).json({
-                message: 'usuario no encontrado.'
-            });
+        return res.status(200).json({
+            message: 'Usuario actualizado con éxito.',
+            data: updatedUser,
+        });
+    } catch (error) {
+        if (error.message.includes('Usuario no encontrado')) {
+            return res.status(404).json({ error: error.message });
         }
 
-        await user.update(req.body);
-
-        res.status(200).json(user);
-
-    } catch (error) {
-        res.status(500).json({
-            message: 'Error al actualizar usuario.',
-            error: error.message,
+        return res.status(500).json({
+            error: 'Error al actualizar usuario.',
         });
     }
-}
+};
 
 const deleteUser = async (req, res) => {
     try {
-        const user = await User.findByPk(req.params.nickName);
-
-        if(!user) {
-            return res.status(404).json({
-                message: 'usuario no encontrado.'
-            });
-        }
-        await user.destroy();
-        res.status(204).send();
-
+        await userService.deleteUser(req.params.nickName);
+        return res.status(204).send();
     } catch (error) {
-        res.status(500).json({
-            message: 'Error al eliminar usuario.',
-            error: error.message,
+        if (error.message.includes('Usuario no encontrado')) {
+            return res.status(404).json({ error: error.message });
+        }
+
+        return res.status(500).json({
+            error: 'Error al eliminar usuario.',
         });
     }
-}
+};
 
+const getUserPosts = async (req, res) => {
+    try {
+        const posts = await userService.getUserPosts(req.params.nickName);
+        return res.status(200).json(posts);
+    } catch (error) {
+        if (error.message.includes('Usuario no encontrado')) {
+            return res.status(404).json({ error: error.message });
+        }
 
+        return res.status(500).json({
+            error: 'Error al obtener posts del usuario.',
+        });
+    }
+};
 
+const getUserComments = async (req, res) => {
+    try {
+        const comments = await userService.getUserComments(req.params.nickName);
+        return res.status(200).json(comments);
+    } catch (error) {
+        if (error.message.includes('Usuario no encontrado')) {
+            return res.status(404).json({ error: error.message });
+        }
+
+        return res.status(500).json({
+            error: 'Error al obtener comentarios del usuario.',
+        });
+    }
+};
 
 module.exports = {
-    getAllUsers,
-    getUserByNickName,
-    deleteUser,
     createUser,
+    getUsers,
+    getUserByNickName,
     updateUser,
+    deleteUser,
     getUserPosts,
     getUserComments,
 };
