@@ -1,5 +1,50 @@
 const { User} = require('../models');
+//extra 
+const getUserPosts = async (req, res) => {
+    try {
+        const user = await User.findByPk(req.params.nickName, {
+            include: 'posts',
+        });
 
+        if (!user) {
+            return res.status(404).json({
+                message: 'Usuario no encontrado'
+            });
+        }
+
+        res.status(200).json(user.posts);
+
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al obtener posts',
+            error: error.message,
+        });
+    }
+}
+
+const getUserComments = async (req, res) => {
+    try {
+        const user = await User.findByPk(req.params.nickName, {
+            include: 'comments',
+        });
+        
+        if(!user) {
+            return res.status(404).json({
+                message: 'Usuario no encontrado'
+            });
+        }
+
+        res.status(200).json(user.comments);
+        
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al obtener comments',
+            error: error.message,
+        });
+    }
+}
+
+//CRUD
 const getAllUsers = async (req, res) => {
     try {
         const users = await User.findAll();
@@ -89,10 +134,14 @@ const deleteUser = async (req, res) => {
 }
 
 
+
+
 module.exports = {
     getAllUsers,
     getUserByNickName,
     deleteUser,
     createUser,
     updateUser,
+    getUserPosts,
+    getUserComments,
 };
