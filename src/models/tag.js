@@ -3,12 +3,17 @@ const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Tag extends Model {
         static associate(models) {
+            Tag.hasMany(models.PostTag, {
+                foreignKey: 'tag_id',
+                as: 'postTags',
+                onDelete: 'CASCADE',
+            })
             Tag.belongsToMany(models.Post, {
-                through: 'PostTags',
+                through: models.PostTag,
                 foreignKey: 'tag_id',
                 otherKey: 'post_id',
                 as: 'posts'
-            })
+            });
         }
     }
     Tag.init(

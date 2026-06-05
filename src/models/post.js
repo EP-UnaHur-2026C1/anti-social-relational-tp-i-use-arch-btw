@@ -12,19 +12,27 @@ module.exports = (sequelize, DataTypes) => {
 
             Post.hasMany(models.Comment, {
                 foreignKey: 'post_id',
+                onDelete: 'CASCADE',
                 as: 'comments',
             });
 
             Post.hasMany(models.PostImage, {
                 foreignKey: 'post_id',
+                onDelete: 'CASCADE',
                 as: 'images',
             });
 
             Post.belongsToMany(models.Tag, {
-                through: 'PostTags',
+                through: models.PostTag,
                 foreignKey: 'post_id',
                 otherKey: 'tag_id',
                 as: 'tags',
+            });
+
+            Post.hasMany(models.PostTag, {
+                foreignKey: 'post_id',
+                as: 'postTags',
+                onDelete: 'CASCADE',
             });
         }
     }
