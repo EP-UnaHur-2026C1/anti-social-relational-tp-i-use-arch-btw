@@ -1,0 +1,9 @@
+router.post('/',  createPost);
+router.get('/', getPosts);
+router.get('/:id', getPostById);
+router.put('/:id', updatePost);
+router.delete('/:id', deletePost);
+router.post('/:id/images', addPostImage);
+router.delete('/:id/images/:imageId', removePostImage);
+router.post('/:id/tags', addPostTag);
+router.delete('/:id/tags/:tagId', removePostTag);
