@@ -1,5 +1,5 @@
 'use strict';
-const { Model} = require('sequelize');
+const { Model } = require('sequelize');
 const post = require('./post');
 module.exports = (sequelize, DataTypes) => {
     class Comment extends Model {
@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
             });
             Comment.belongsTo(models.Post, {
                 foreignKey: 'post_id',
-                as: 'post'
-            })
+                as: 'post',
+            });
         }
     }
     Comment.init(
@@ -37,13 +37,12 @@ module.exports = (sequelize, DataTypes) => {
             post_id: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-            }
+            },
         },
         {
             sequelize,
             modelname: 'Comment',
         }
-
     );
     return Comment;
-}
+};

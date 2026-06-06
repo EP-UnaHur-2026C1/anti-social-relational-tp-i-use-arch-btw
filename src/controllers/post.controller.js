@@ -1,5 +1,4 @@
-const {Post} = require('../models');
-
+const { Post } = require('../models');
 
 //CRUD
 const getAllPosts = async (req, res) => {
@@ -21,8 +20,7 @@ const getPostById = async (req, res) => {
     try {
         const post = await Post.findByPk({
             include: ['user', 'comments', 'images', 'tags'],
-        }),
-
+        });
         if (!post) {
             return res.status(404).json({
                 message: 'Post no encontrado',
@@ -44,12 +42,12 @@ const createPost = async (req, res) => {
 
         if (!user) {
             return res.status(404).json({
-                message: 'Usuario no encontrado'
+                message: 'Usuario no encontrado',
             });
         }
 
         const post = await Post.create(req.body);
-    }  catch (error) {
+    } catch (error) {
         res.status(500).json({
             message: 'Error al crear Post',
             error: error.message,
@@ -63,13 +61,11 @@ const deletePost = async (req, res) => {
 
         if (!post) {
             return res.status(404).json({
-                message: 'Post no encontrado'
+                message: 'Post no encontrado',
             });
         }
 
-        await Post.destroy()
-
-
+        await Post.destroy();
     } catch (error) {
         res.status(500).json({
             message: 'Error al eliminar Post',
@@ -84,12 +80,11 @@ const updatePost = async (req, res) => {
 
         if (!post) {
             return res.status(404).json({
-                message: 'Post no encontrado'
+                message: 'Post no encontrado',
             });
         }
 
         await post.update(req.body);
-
     } catch (error) {
         res.status(500).json({
             message: 'Error al actualizar Post',
@@ -98,10 +93,26 @@ const updatePost = async (req, res) => {
     }
 };
 
+const addPostImage = async (req, res) => {
+}
+
+const removePostImage = async (req, res) => {
+}
+
+const addPostTag = async (req, res) => {
+}
+
+const removePostTag = async (req, res) => {
+}
+
 module.exports = {
     updatePost,
     getAllPosts,
     getPostById,
     deletePost,
     createPost,
+    addPostImage,
+    removePostImage,
+    addPostTag,
+    removePostTag,
 };

@@ -22,7 +22,7 @@ const createUserSchema = Joi.object({
     surname: Joi.string().trim().min(5).max(100).optional().messages({
         'string.base': 'El apellido debe ser un texto',
         'string.min': 'El campo apellido debe tener al menos 5 carácteres',
-    })
+    }),
 });
 
 module.exports = { createUserSchema };

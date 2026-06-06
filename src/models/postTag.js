@@ -1,5 +1,5 @@
 'use strict';
-const {Model} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class PostTag extends Model {
         static associate(models) {
@@ -16,13 +16,11 @@ module.exports = (sequelize, DataTypes) => {
         }
     }
     PostTag.init(
-        {
-
-        },
+        {},
         {
             sequelize,
             modelName: 'PostTag',
         }
     );
     return PostTag;
-}
+};

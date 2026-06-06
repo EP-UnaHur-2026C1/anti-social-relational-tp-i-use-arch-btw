@@ -1,5 +1,5 @@
 'use strict';
-const {Model} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class PostImage extends Model {
         static associate(models) {
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
             post_id: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-            }
+            },
         },
         {
             sequelize,
@@ -31,4 +31,4 @@ module.exports = (sequelize, DataTypes) => {
         }
     );
     return PostImage;
-}
+};

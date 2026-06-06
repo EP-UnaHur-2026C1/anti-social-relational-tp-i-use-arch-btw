@@ -12,8 +12,7 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'user_nickName',
                 onDelete: 'CASCADE',
                 as: 'posts',
-            })
-
+            });
         }
     }
     User.init(
@@ -30,8 +29,8 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             name: {
-            type: DataTypes.STRING,
-            allowNull: false,
+                type: DataTypes.STRING,
+                allowNull: false,
             },
 
             surname: {
@@ -42,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 defaultValue: 0,
-            }
+            },
         },
         {
             sequelize,
