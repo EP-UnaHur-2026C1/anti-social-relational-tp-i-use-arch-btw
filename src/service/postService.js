@@ -1,4 +1,3 @@
-class PostService {
-}
+class PostService {}
 
 module.exports = new PostService();

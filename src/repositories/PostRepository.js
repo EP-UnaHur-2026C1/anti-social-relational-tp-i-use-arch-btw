@@ -1,6 +1,5 @@
 const { Post } = require('../models');
 
-class PostRepository {
-}
+class PostRepository {}
 
 module.exports = new PostRepository();

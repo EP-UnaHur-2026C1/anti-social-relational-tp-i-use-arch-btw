@@ -1,6 +1,5 @@
 const { PostImage } = require('../models');
 
-class PostImageRepository {
-}
+class PostImageRepository {}
 
 module.exports = new PostImageRepository();

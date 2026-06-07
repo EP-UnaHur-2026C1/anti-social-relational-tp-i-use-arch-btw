@@ -1,17 +1,13 @@
 const { Tag } = require('../models');
 
 class TagRepository {
-    async create(data) {
-    }
+    async create(data) {}
 
-    async findAll() {
-    }
+    async findAll() {}
 
-    async findById(id) {
-    }
+    async findById(id) {}
 
-    async deleteById(id) {
-    }
+    async deleteById(id) {}
 }
 
 module.exports = new TagRepository();

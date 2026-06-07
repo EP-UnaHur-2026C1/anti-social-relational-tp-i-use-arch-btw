@@ -93,17 +93,13 @@ const updatePost = async (req, res) => {
     }
 };
 
-const addPostImage = async (req, res) => {
-}
+const addPostImage = async (req, res) => {};
 
-const removePostImage = async (req, res) => {
-}
+const removePostImage = async (req, res) => {};
 
-const addPostTag = async (req, res) => {
-}
+const addPostTag = async (req, res) => {};
 
-const removePostTag = async (req, res) => {
-}
+const removePostTag = async (req, res) => {};
 
 module.exports = {
     updatePost,

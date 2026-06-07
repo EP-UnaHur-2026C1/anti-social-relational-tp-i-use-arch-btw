@@ -6,5 +6,4 @@ const router = Router();
 
 router.post('/', validateSchema(createUserSchema), createUser);
 router.get('/', getUsers);
-
 module.exports = router;
