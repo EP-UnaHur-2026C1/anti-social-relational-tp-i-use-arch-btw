@@ -18,4 +18,17 @@ const createCommentSchema = Joi.object({
     }),
 });
 
-module.exports = { createCommentSchema };
+const updateCommentSchema = Joi.object({
+    content: Joi.string().trim().min(1).max(500).messages({
+        'string.base': 'El contenido debe ser un texto',
+        'string.empty': 'El comentario no puede estar vacío',
+    }),
+    user_nickName: Joi.string().trim().min(2).max(100).messages({
+        'string.base': 'El nick name debe ser un texto',
+    }),
+    post_id: Joi.number().integer().messages({
+        'number.base': 'El ID del post debe ser un número',
+    }),
+});
+
+module.exports = { createCommentSchema, updateCommentSchema };

@@ -4,7 +4,7 @@ sequenceDiagram
 
     box rgb(40,44,52) 1. Capa de Red (HTTP)
         participant Ruta as 🌐 Routes
-        participant Middleware as 🛡️ Middlewares (Joi)
+        participant Middleware as 🛡️ Middlewares
         participant Ctrl as 🎮 Controllers
     end
 
@@ -17,33 +17,31 @@ sequenceDiagram
         participant DB as 🗄️ Models (Sequelize)
     end
 
-%% Explicación rápida de responsabilidades
-    Note over Ruta: Define los endpoints<br/>(ej. /api/posts)
-    Note over Middleware: Filtro de seguridad.<br/>Frena datos basura.
-    Note over Ctrl: Maneja req y res.<br/>No tiene lógica.
-    Note over Svc: Aplica reglas de los sponsors.<br/>El cerebro del MVP.
-    Note over Repo: El intermediario.<br/>Aísla la BD del cerebro.
-    Note over DB: Tablas y SQL.
+%% Responsabilidades de cada capa
+    Note over Ruta: Define los puntos de entrada de la API<br/>Delaga al middleware correspondiente
+    Note over Middleware: Valida el formato de los datos entrantes<br/>con esquemas Joi antes de dejar pasar
+    Note over Ctrl: Recibe la petición ya validada,<br/>invoca al servicio y arma la respuesta HTTP
+    Note over Svc: Contiene toda la lógica de negocio.<br/>Orquesta validaciones y operaciones
+    Note over Repo: Abstrae el acceso a la base de datos.<br/>Aísla al Service del ORM
+    Note over DB: Modelos Sequelize que representan<br/>las tablas de la base de datos (SQLite)
 
-%% Inicio del flujo de la petición
-    Cliente->>Ruta: POST /api/posts {description: "Hola"}
-    Ruta->>Middleware: Pasa los datos al validador (Joi)
+%% Inicio del flujo de una petición exitosa
+    Cliente->>Ruta: POST /api/posts { "description": "Hola" }
+    Ruta->>Middleware: Ejecuta el validador correspondiente
 
-    alt ❌ Datos Inválidos o Incompletos
-        Middleware-->>Cliente: Responde 400 (Bad Request) - Frena aquí
-    else ✅ Datos Válidos
-        Middleware->>Ctrl: Todo en orden, avanza al Controlador (next)
-        Ctrl->>Svc: postService.create(req.body)
+    alt ❌ Datos inválidos
+        Middleware-->>Cliente: 400 Bad Request + errores de validación
+    else ✅ Datos válidos
+        Middleware->>Ctrl: next() — datos limpios y listos
+        Ctrl->>Svc: postService.createPost(req.body)
 
-        Note over Svc: Valida reglas extra de negocio<br/>(Ej: si el usuario existe o cálculos de meses)
+        Note over Svc: Verifica reglas de negocio<br/>(usuario existe, duplicados, etc.)
 
-        Svc->>Repo: postRepository.save(postData)
-
-        Note over Repo: Traduce el pedido al idioma del ORM.<br/>Protege al Service de saber qué es Sequelize.
-
+        Svc->>Repo: postRepository.create(data)
         Repo->>DB: Post.create(postData)
-        DB-->>Repo: Devuelve la instancia guardada (SQLite)
-        Repo-->>Svc: Entrega los datos limpios en JSON
-        Svc-->>Ctrl: Devuelve el resultado exitoso
-        Ctrl-->>Cliente: Responde 201 (Created) + Datos
+        DB-->>Repo: Instancia guardada
+        Repo-->>Svc: Objeto resultante
+
+        Svc-->>Ctrl: Resultado procesado
+        Ctrl-->>Cliente: 201 Created + datos del post creado
     end

@@ -13,6 +13,18 @@ module.exports = (sequelize, DataTypes) => {
                 onDelete: 'CASCADE',
                 as: 'posts',
             });
+            User.belongsToMany(models.User, {
+                through: models.Follow,
+                foreignKey: 'following_nickName',
+                otherKey: 'follower_nickName',
+                as: 'followerUsers',
+            });
+            User.belongsToMany(models.User, {
+                through: models.Follow,
+                foreignKey: 'follower_nickName',
+                otherKey: 'following_nickName',
+                as: 'following',
+            });
         }
     }
     User.init(
@@ -35,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
 
             surname: {
                 type: DataTypes.STRING,
-                allowNull: false,
+                allowNull: true,
             },
             followers: {
                 type: DataTypes.INTEGER,

@@ -2,29 +2,26 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('Users', {
-            nickName: {
+        await queryInterface.createTable('Follows', {
+            follower_nickName: {
+                type: Sequelize.STRING,
                 allowNull: false,
                 primaryKey: true,
-                type: Sequelize.STRING,
+                references: {
+                    model: 'Users',
+                    key: 'nickName',
+                },
+                onDelete: 'CASCADE',
             },
-            email: {
+            following_nickName: {
                 type: Sequelize.STRING,
                 allowNull: false,
-                unique: true,
-            },
-            name: {
-                type: Sequelize.STRING,
-                allowNull: false,
-            },
-            surname: {
-                type: Sequelize.STRING,
-                allowNull: true,
-            },
-            followers: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                defaultValue: 0,
+                primaryKey: true,
+                references: {
+                    model: 'Users',
+                    key: 'nickName',
+                },
+                onDelete: 'CASCADE',
             },
             createdAt: {
                 allowNull: false,
@@ -37,6 +34,6 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('Users');
+        await queryInterface.dropTable('Follows');
     },
 };

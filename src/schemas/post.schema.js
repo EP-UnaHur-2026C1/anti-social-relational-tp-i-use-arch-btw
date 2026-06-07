@@ -21,4 +21,17 @@ const createPostSchema = Joi.object({
     }),
 });
 
-module.exports = { createPostSchema };
+const updatePostSchema = Joi.object({
+    description: Joi.string().trim().min(1).messages({
+        'string.empty': 'La descripción no puede estar vacía',
+    }),
+});
+
+const addPostTagSchema = Joi.object({
+    tag_id: Joi.number().integer().positive().required().messages({
+        'number.base': 'El ID de la etiqueta debe ser un número',
+        'any.required': 'El ID de la etiqueta es obligatorio',
+    }),
+});
+
+module.exports = { createPostSchema, updatePostSchema, addPostTagSchema };

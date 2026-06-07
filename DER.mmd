@@ -4,9 +4,12 @@ title: Anti Social Net
 erDiagram
     USER ||--o{ POST : "publica"
     USER ||--o{ COMMENT : "escribe"
+    USER ||--o{ FOLLOW : "sigue"
+    USER ||--o{ FOLLOW : "es seguido"
     POST ||--o{ POST_IMAGES : "contiene"
     POST ||--o{ COMMENT : "recibe"
-    POST }|--|{ TAG : "tiene asignado"
+    POST ||--o{ POST_TAG : "tiene"
+    TAG ||--o{ POST_TAG : "asignado a"
 
     USER {
         string nickName PK
@@ -41,4 +44,14 @@ erDiagram
     TAG {
         int id PK
         string name UK
+    }
+
+    POST_TAG {
+        int post_id FK
+        int tag_id FK
+    }
+
+    FOLLOW {
+        string follower_nickName FK
+        string following_nickName FK
     }

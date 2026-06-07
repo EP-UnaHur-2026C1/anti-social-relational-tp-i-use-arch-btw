@@ -1,105 +1,53 @@
-const { Post } = require('../models');
+const postService = require('../service/postService');
+const catchAsync = require('../middlewares/catchAsync');
+const { created, success, noContent, ok } = require('../helpers/response');
 
-//CRUD
-const getAllPosts = async (req, res) => {
-    try {
-        const posts = await Post.findAll({
-            include: ['user', 'comments', 'images', 'tags'],
-        });
+const getAllPosts = catchAsync(async (req, res) => {
+    const posts = await postService.getAllPosts();
+    return ok(res, posts);
+});
 
-        res.status(200).json(posts);
-    } catch (error) {
-        res.status(500).json({
-            message: 'Error al obtener posts',
-            error: error.message,
-        });
-    }
-};
+const getPostById = catchAsync(async (req, res) => {
+    const post = await postService.getPostById(req.params.id);
+    return ok(res, post);
+});
 
-const getPostById = async (req, res) => {
-    try {
-        const post = await Post.findByPk({
-            include: ['user', 'comments', 'images', 'tags'],
-        });
-        if (!post) {
-            return res.status(404).json({
-                message: 'Post no encontrado',
-            });
-        }
+const createPost = catchAsync(async (req, res) => {
+    const post = await postService.createPost(req.body);
+    return created(res, post, 'Post creado con éxito.');
+});
 
-        res.status(200).json(post);
-    } catch (error) {
-        res.status(500).json({
-            message: 'Error al obtener post',
-            error: error.message,
-        });
-    }
-};
+const deletePost = catchAsync(async (req, res) => {
+    await postService.deletePost(req.params.id);
+    return noContent(res);
+});
 
-const createPost = async (req, res) => {
-    try {
-        const user = await User.findByPk(req.body.user_nickName);
+const updatePost = catchAsync(async (req, res) => {
+    const post = await postService.updatePost(req.params.id, req.body);
+    return success(res, post, 'Post actualizado con éxito.');
+});
 
-        if (!user) {
-            return res.status(404).json({
-                message: 'Usuario no encontrado',
-            });
-        }
+const addPostImage = catchAsync(async (req, res) => {
+    const { url } = req.body;
+    const image = await postService.addPostImage(req.params.id, url);
+    return created(res, image, 'Imagen agregada con éxito.');
+});
 
-        const post = await Post.create(req.body);
-    } catch (error) {
-        res.status(500).json({
-            message: 'Error al crear Post',
-            error: error.message,
-        });
-    }
-};
+const removePostImage = catchAsync(async (req, res) => {
+    await postService.removePostImage(req.params.imageId);
+    return noContent(res);
+});
 
-const deletePost = async (req, res) => {
-    try {
-        const post = await Post.findByPk(req.params.id);
+const addPostTag = catchAsync(async (req, res) => {
+    const { tag_id } = req.body;
+    const postTag = await postService.addPostTag(req.params.id, tag_id);
+    return created(res, postTag, 'Etiqueta agregada al post con éxito.');
+});
 
-        if (!post) {
-            return res.status(404).json({
-                message: 'Post no encontrado',
-            });
-        }
-
-        await Post.destroy();
-    } catch (error) {
-        res.status(500).json({
-            message: 'Error al eliminar Post',
-            error: error.message,
-        });
-    }
-};
-
-const updatePost = async (req, res) => {
-    try {
-        const post = await Post.findByPk(req.params.id);
-
-        if (!post) {
-            return res.status(404).json({
-                message: 'Post no encontrado',
-            });
-        }
-
-        await post.update(req.body);
-    } catch (error) {
-        res.status(500).json({
-            message: 'Error al actualizar Post',
-            error: error.message,
-        });
-    }
-};
-
-const addPostImage = async (req, res) => {};
-
-const removePostImage = async (req, res) => {};
-
-const addPostTag = async (req, res) => {};
-
-const removePostTag = async (req, res) => {};
+const removePostTag = catchAsync(async (req, res) => {
+    await postService.removePostTag(req.params.id, req.params.tagId);
+    return noContent(res);
+});
 
 module.exports = {
     updatePost,

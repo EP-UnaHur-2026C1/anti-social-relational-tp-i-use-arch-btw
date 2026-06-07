@@ -19,7 +19,7 @@ class UserRepository {
 
     async getTotalUsers() {
         const users = await User.findAll({
-            attributes: ['nickName', 'email', 'name'],
+            attributes: ['nickName', 'email', 'name', 'surname', 'followers'],
         });
 
         return users;

@@ -1,35 +1,33 @@
 const commentService = require('../service/commentService');
+const catchAsync = require('../middlewares/catchAsync');
+const { created, success, ok } = require('../helpers/response');
 
-const createComment = async (req, res) => {
-    try {
-        const userData = req.body;
-        const newComment = await commentService.createComment(userData);
-        return res.status(201).json({
-            message: '✅ Comentario creado con éxito.',
-            data: newComment,
-        });
-    } catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
-};
+const createComment = catchAsync(async (req, res) => {
+    const newComment = await commentService.createComment(req.body);
+    return created(res, newComment, '✅ Comentario creado con éxito.');
+});
 
-const updateComment = async (req, res) => {};
+const updateComment = catchAsync(async (req, res) => {
+    const updatedComment = await commentService.updateComment(
+        req.params.id,
+        req.body
+    );
+    return success(res, updatedComment, '✅ Comentario actualizado con éxito.');
+});
 
-const getComments = async (req, res) => {
+const getComments = catchAsync(async (req, res) => {
     const comments = await commentService.getComments();
-    return res.status(200).json({
-        message: '✅ Comentarios obtenidos con éxito.',
-        data: comments,
-    });
-};
+    return ok(res, comments);
+});
 
-const deleteComment = async (req, res) => {
-    const { id } = req.params;
-    const comment = await commentService.deleteComment(id);
-    return res.status(200).json({
-        message: `✅ Comentario con id ${id} eliminado con éxito.`,
-    });
-};
+const deleteComment = catchAsync(async (req, res) => {
+    const comment = await commentService.deleteComment(req.params.id);
+    return success(
+        res,
+        comment,
+        `✅ Comentario con id ${req.params.id} eliminado con éxito.`
+    );
+});
 
 module.exports = {
     createComment,

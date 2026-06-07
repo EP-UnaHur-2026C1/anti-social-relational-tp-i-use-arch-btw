@@ -1,3 +1,4 @@
+const AppError = require('../helpers/AppError');
 const commentRepository = require('../repositories/CommentRepository');
 
 class CommentService {
@@ -6,8 +7,9 @@ class CommentService {
             commentData.content
         );
         if (existingComment) {
-            throw new Error(
-                'El comentario con ese contenido ya está registrado.'
+            throw new AppError(
+                'El comentario con ese contenido ya está registrado.',
+                409
             );
         }
         const newComment = await commentRepository.create(commentData);
@@ -18,10 +20,19 @@ class CommentService {
         const comments = await commentRepository.findAll();
         return comments;
     }
+
+    async updateComment(id, commentData) {
+        const updatedComment = await commentRepository.update(id, commentData);
+        if (!updatedComment) {
+            throw new AppError(`Comentario con id ${id} no encontrado.`, 404);
+        }
+        return updatedComment;
+    }
+
     async deleteComment(id) {
         const comment = await commentRepository.delete(id);
         if (!comment) {
-            throw new Error(`Comentario con id ${id} no encontrado.`);
+            throw new AppError(`Comentario con id ${id} no encontrado.`, 404);
         }
         return comment;
     }

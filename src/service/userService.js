@@ -1,3 +1,4 @@
+const AppError = require('../helpers/AppError');
 const UserRepository = require('../repositories/UserRepository');
 
 class UserService {
@@ -8,7 +9,10 @@ class UserService {
         );
 
         if (existingUser) {
-            throw new Error('El nickName o el email ya están registrados.');
+            throw new AppError(
+                'El nickName o el email ya están registrados.',
+                409
+            );
         }
 
         const newUser = await UserRepository.create(userData);
@@ -24,7 +28,7 @@ class UserService {
         const user = await UserRepository.findByNickName(nickName);
 
         if (!user) {
-            throw new Error('Usuario no encontrado.');
+            throw new AppError('Usuario no encontrado.', 404);
         }
 
         return user;
@@ -37,7 +41,7 @@ class UserService {
         );
 
         if (!updatedUser) {
-            throw new Error('Usuario no encontrado.');
+            throw new AppError('Usuario no encontrado.', 404);
         }
 
         return updatedUser;
@@ -47,7 +51,7 @@ class UserService {
         const deletedUser = await UserRepository.deleteByNickName(nickName);
 
         if (!deletedUser) {
-            throw new Error('Usuario no encontrado.');
+            throw new AppError('Usuario no encontrado.', 404);
         }
 
         return deletedUser;
@@ -57,7 +61,7 @@ class UserService {
         const user = await UserRepository.getUserPosts(nickName);
 
         if (!user) {
-            throw new Error('Usuario no encontrado.');
+            throw new AppError('Usuario no encontrado.', 404);
         }
 
         return user.posts || [];
@@ -67,7 +71,7 @@ class UserService {
         const user = await UserRepository.getUserComments(nickName);
 
         if (!user) {
-            throw new Error('Usuario no encontrado.');
+            throw new AppError('Usuario no encontrado.', 404);
         }
 
         return user.comments || [];
