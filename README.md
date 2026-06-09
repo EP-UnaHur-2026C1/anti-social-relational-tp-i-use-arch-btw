@@ -1,8 +1,19 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/I9P6ejM-)
 
+![Node.js](https://img.shields.io/badge/Node.js-5FA04E?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
+![Sequelize](https://img.shields.io/badge/Sequelize-52B0E7?style=for-the-badge&logo=sequelize&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
+![Joi](https://img.shields.io/badge/Joi-FF69B4?style=for-the-badge&logo=joi&logoColor=white)
+![pnpm](https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white)
+![Mermaid](https://img.shields.io/badge/Mermaid-FF3670?style=for-the-badge&logo=mermaid&logoColor=white)
+![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black)
+
 # 🚀 UnaHur Anti-Social Net
 
-Backend de una red social, hecha con Node.js + Express + Sequelize.
+Backend de una red social, hecha con Node.js + Express + Sequelize. Sigue el patrón **Controller → Service → Repository** para mantener las capas bien separadas y que el código sea más mantenible.
 
 ![Imagen](./assets/ANTI-SOCIALNET.jpeg)
 
@@ -58,16 +69,6 @@ erDiagram
     TAG ||--o{ POST_TAG : "asignado a"
 ```
 
-## 🔧 Tecnologías
-
--   **Runtime:** Node.js
--   **Framework:** Express 5
--   **ORM:** Sequelize 6
--   **Base:** SQLite / MySQL 
--   **Validación:** Joi
--   **Docs:** Swagger (swagger-jsdoc + swagger-ui-express)
--   **Formato:** Prettier
--   **Package manager:** pnpm
 
 ## 🚀 Cómo levantar esto
 
