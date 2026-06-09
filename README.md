@@ -1,78 +1,141 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/I9P6ejM-)
 
-# Red Anti-Social
+# 🚀 UnaHur Anti-Social Net
 
-Se solicita el modelado y desarrollo de un sistema backend para una red social llamada **“UnaHur Anti-Social Net”**, inspirada en plataformas populares que permiten a los usuarios realizar publicaciones y recibir comentarios sobre las mismas.
+Backend de una red social, hecha con Node.js + Express + Sequelize.
 
 ![Imagen](./assets/ANTI-SOCIALNET.jpeg)
 
-# Contexto del Proyecto
+## 📋 Descripción
 
-En una primera reunión con los sponsors del proyecto, se definieron los siguientes requerimientos para el desarrollo de un **MVP (Producto Mínimo Viable)**:
+Esto es el **MVP** de la **"UnaHur Anti-Social Net"**, una red social inspirada en las plataformas populares.
+La idea es que la gente pueda:
 
-- El sistema debe permitir que un usuario registrado realice una publicación (post), incluyendo **obligatoriamente una descripción**. De forma opcional, se podrán asociar **una o más imágenes** a dicha publicación.
+-   Crear posts con descripción y opcionalmente mandar imágenes.
+-   Comentar los posts de otros.
+-   Etiquetar posts con tags.
+-   Seguirse entre usuarios.
 
-- Las publicaciones pueden recibir **comentarios** por parte de otros usuarios.
+## 🏗️ Arquitectura
 
-- Las publicaciones pueden estar asociadas a **etiquetas (tags)**. Una misma etiqueta puede estar vinculada a múltiples publicaciones.
+```
+src/
+├── config/         → Configuración de Sequelize 
+├── controllers/    → La capa que recibe los requests y llama a los services
+├── helpers/        → Utils: manejo de errores y respuestas estandarizadas
+├── middlewares/    → Error handler, validator, catchAsync
+├── models/         → Modelos de Sequelize (User, Post, Comment, Tag, etc.)
+├── repositories/   → Capa de acceso a datos 
+├── routes/         → Definición de endpoints con Swagger docs
+├── schemas/        → Validación con Joi
+├── service/        → Lógica de negocio
+├── main.js         → Entry point del server
+└── swagger.js      → Configuración de Swagger
+```
 
-- Es importante que los **comentarios más antiguos que X meses** (valor configurable mediante variables de entorno, por ejemplo, 6 meses) **no se muestren** en la visualización de los posteos.
+## 🧠 Entidades
 
-####
+| Entidad       | Descripción |
+|---------------|-------------|
+| **User**      | Usuarios registrados. `nickName` es la clave primaria. |
+| **Post**      | Publicaciones con descripción obligatoria y fecha. |
+| **Post_Images** | Imágenes asociadas a un post. |
+| **Comment**   | Comentarios en posts. Tienen un `visible` que depende de la config de meses. |
+| **Tag**       | Etiquetas reutilizables. |
+| **Follow**    | Seguimiento entre usuarios. |
 
-# Entidades y Reglas de Negocio
+### Diagrama Entidad-Relación
 
-Los sponsors definieron los siguientes nombres y descripciones para las entidades:
+```mermaid
+erDiagram
+    USER ||--o{ POST : "publica"
+    USER ||--o{ COMMENT : "escribe"
+    USER ||--o{ FOLLOW : "sigue"
+    USER ||--o{ FOLLOW : "es seguido"
+    POST ||--o{ POST_IMAGES : "contiene"
+    POST ||--o{ COMMENT : "recibe"
+    POST ||--o{ POST_TAG : "tiene"
+    TAG ||--o{ POST_TAG : "asignado a"
+```
 
-- **User**: Representa a los usuarios registrados en el sistema. El campo `nickName` debe ser **único** y funcionará como identificador principal del usuario.
+## 🔧 Tecnologías
 
-- **Post**: Publicación realizada por un usuario en una fecha determinada que contiene el texto que desea publicar. Puede tener **cero o más imágenes** asociadas. Debe contemplarse la posibilidad de **agregar o eliminar imágenes** posteriormente.
+-   **Runtime:** Node.js
+-   **Framework:** Express 5
+-   **ORM:** Sequelize 6
+-   **Base:** SQLite / MySQL 
+-   **Validación:** Joi
+-   **Docs:** Swagger (swagger-jsdoc + swagger-ui-express)
+-   **Formato:** Prettier
+-   **Package manager:** pnpm
 
-- **Post_Images**: Entidad que registra las imágenes asociadas a los posts. Para el MVP, solo se requiere almacenar la **URL de la imagen alojada**.
+## 🚀 Cómo levantar esto
 
-- **Comment**: Comentario que un usuario puede realizar sobre una publicación. Incluye la fecha en la que fue realizado y una indicación de si está **visible o no**, dependiendo de la configuración (X meses).
+```bash
+# 1. Clonás el repo
+git clone <repo-url>
+cd anti-social-relational-tp-i-use-arch-btw
 
-- **Tag**: Etiqueta que puede ser asignada a un post. Una etiqueta puede estar asociada a **muchos posts**, y un post puede tener **múltiples etiquetas**.
+# 2. Instalás las dependencias
+pnpm install
 
-# Requerimientos Técnicos
+# 3. Configurás las variables de entorno (copiás el .env.example)
+cp .env.example .env
 
-1. **Modelado de Datos**
-    - Diseñar el **Diagrama Entidad-Relación (DER)** considerando relaciones de tipo uno a muchos y muchos a muchos.
+# 4. Corrés las migraciones (crea las tablas)
+pnpm dlx sequelize-cli db:migrate
 
-    - Además de las claves primarias, identificar en qué entidades se requiere una **clave única** (`unique key`), y definirla explícitamente.
+# 5. (Opcional) Sembrás data de prueba
+pnpm dlx sequelize-cli db:seed:all
 
-2. **Desarrollo del Backend**
-    - Crear los **endpoints CRUD** necesarios para cada entidad.
+# 6. Lo prendés
+pnpm run dev
+```
 
-    - Implementar las rutas necesarias para gestionar las relaciones entre entidades (por ejemplo: asociar imágenes a un post, etiquetas a una publicación, etc.).
+El server arranca en `http://localhost:3000` y la docu de Swagger en `http://localhost:3000/api-docs`.
 
-    - Desarrollar las validaciones necesarias para asegurar la integridad de los datos (schemas, validaciones de integridad referencial).
+## 🌍 Variables de Entorno
 
-3. **Configuración y Portabilidad**
-    - El sistema debe poder cambiar de **base de datos** de forma transparente, utilizando configuración e instalación de dependencias adecuadas.
+| Variable                      | Default | Descripción |
+|-------------------------------|---------|-------------|
+| `PORT`                        | `3000`  | Puerto del server |
+| `NODE_ENV`                    | `development` | Entorno |
+| `DB_STORAGE`                  | `./data/data.sqlite` | Ruta de la DB (SQLite) |
+| `COMMENT_VISIBILITY_MONTHS`   | `6`     | Meses de visibilidad de comentarios |
 
-    - El sistema debe permitir configurar el **puerto de ejecución y variables de entorno** fácilmente.
+## 📬 Endpoints
 
-4. **Documentación**
-    - Generar la documentación de la API utilizando **Swagger (formato YAML)**, incluyendo todos los endpoints definidos.
+### Users
+- `GET /api/users` — Lista todos los usuarios
+- `GET /api/users/:nickName` — Busca un user por nick
+- `POST /api/users` — Crea un usuario
+- `PUT /api/users/:nickName` — Actualiza un usuario
+- `DELETE /api/users/:nickName` — Borra un usuario
 
-5. **Colecciones de Prueba**
-    - Entregar las colecciones necesarias para realizar pruebas (por ejemplo, colecciones de Postman o archivos JSON de ejemplo).
+### Posts
+- `GET /api/posts` — Lista todos los posts
+- `GET /api/posts/:id` — Busca un post por ID
+- `POST /api/posts` — Crea un post
+- `PUT /api/posts/:id` — Actualiza un post
+- `DELETE /api/posts/:id` — Borra un post
 
-###
+### Comments
+- `GET /api/comments` — Lista comentarios
+- `POST /api/comments` — Crea un comentario
+- `PUT /api/comments/:id` — Actualiza un comentario
+- `DELETE /api/comments/:id` — Borra un comentario
 
-# Recomendaciones y ayudas
+### Tags
+- `GET /api/tags` — Lista tags
+- `POST /api/tags` — Crea un tag
+- `DELETE /api/tags/:id` — Borra un tag
 
-Les entregamos este link que apunta a un front-end ya desarrollado para que puedan investigarlo y puedan crear el back-end que se ajuste lo máximo posible el funcionamiento del front.
+### Follow
+- `POST /api/follow/:followerNick/:followingNick` — Seguir a alguien
+- `DELETE /api/follow/:followerNick/:followingNick` — Dejar de seguir
 
-[https://unahur.vmdigitai.com/redes-front/users](https://unahur.vmdigitai.com/redes-front/users)
+> Para más detalle, cuando el server esté corriendo entra a `/api-docs`.
 
-Por otro lado les dejamos la documentación de los endpoint para que también la puedan revisar y armar siguiendo este link
+## 🧪 Testing
 
-[https://unahur.vmdigitai.com/swagger/](https://unahur.vmdigitai.com/swagger/)
-
-# Bonus
-
-1. Hace el upload de las imágenes que se asocian a un POST que lo guarden en una carpeta de imágenes dentro del servidor web.
-2. ¿Cómo modelarías que un usuario pueda "seguir" a otros usuarios, y a su vez ser seguido por muchos? Followers
-3. Como la información de los post no varía muy seguido ¿Qué estrategias podrían utilizar para que la información no sea constantemente consultada desde la base de datos?
+En la raíz del proyecto está el archivo `ANTI-SOCIAL-NET.postman_collection.json` con todos los endpoints para importar en Postman y probar todo.
