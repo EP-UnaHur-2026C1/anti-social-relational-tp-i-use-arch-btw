@@ -20,7 +20,7 @@ const {
  *     responses:
  *       200:
  *         description: Lista de comentarios
-*/
+ */
 router.get('/', getComments);
 
 /**
@@ -46,7 +46,7 @@ router.get('/', getComments);
  *     responses:
  *       200:
  *         description: Comentario actualizado
-*/
+ */
 router.put('/:id', validateSchema(updateCommentSchema), updateComment);
 
 /**
@@ -72,7 +72,7 @@ router.put('/:id', validateSchema(updateCommentSchema), updateComment);
  *           description: Comentario creado
  *         400:
  *           description: Error de validación
-*/
+ */
 router.post('/', validateSchema(createCommentSchema), createComment);
 
 /**
@@ -91,6 +91,5 @@ router.post('/', validateSchema(createCommentSchema), createComment);
  *         description: Comentario eliminado
  */
 router.delete('/:id', deleteComment);
-
 
 module.exports = router;

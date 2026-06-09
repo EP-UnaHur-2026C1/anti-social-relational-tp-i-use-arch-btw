@@ -19,7 +19,6 @@ const {
     removePostTag,
 } = require('../controllers/post.controller');
 
-
 /**
  * @openapi
  * /api/posts:
@@ -167,8 +166,6 @@ router.post('/:id/images', validateSchema(addPostImageSchema), addPostImage);
  */
 router.delete('/:id/images/:imageId', removePostImage);
 
-
-
 /**
  * @openapi
  * /api/posts/{id}/tags:
@@ -194,7 +191,6 @@ router.delete('/:id/images/:imageId', removePostImage);
  *         description: Etiqueta añadida
  */
 
-
 router.post('/:id/tags', validateSchema(addPostTagSchema), addPostTag);
 
 /**
@@ -203,12 +199,12 @@ router.post('/:id/tags', validateSchema(addPostTagSchema), addPostTag);
  *   delete:
  *     summary: Eliminar una etiqueta de un post
  *     parameters:
- *      - in: path
+ *     - in: path
  *       name: id
  *       required: true
  *       schema:
  *         type: integer
- *      - in: path
+ *     - in: path
  *       name: tagId
  *       required: true
  *       schema:

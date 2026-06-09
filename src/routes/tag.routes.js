@@ -8,7 +8,6 @@ const {
 const validateSchema = require('../middlewares/validator.middleware');
 const { createTagSchema } = require('../schemas/tag.schema');
 
-
 /**
  * @openapi
  * /api/tags:

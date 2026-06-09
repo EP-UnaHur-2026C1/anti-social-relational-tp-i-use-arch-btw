@@ -1,0 +1,418 @@
+{
+	"info": {
+		"name": "Anti Social Net",
+		"description": "Colección de pruebas para la API de UnaHur Anti-Social Net",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000/api",
+			"type": "string"
+		},
+		{
+			"key": "nickName",
+			"value": "john_doe",
+			"type": "string"
+		},
+		{
+			"key": "postId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "commentId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "tagId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "imageId",
+			"value": "1",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nickName\": \"john_doe\",\n  \"email\": \"john@example.com\",\n  \"name\": \"John\",\n  \"surname\": \"Doe\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["users"]
+						}
+					}
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["users"]
+						}
+					}
+				},
+				{
+					"name": "Get User by NickName",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/users/{{nickName}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "{{nickName}}"]
+						}
+					}
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john.new@example.com\",\n  \"name\": \"John Updated\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{nickName}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "{{nickName}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{baseUrl}}/users/{{nickName}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "{{nickName}}"]
+						}
+					}
+				},
+				{
+					"name": "Get User Posts",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/users/{{nickName}}/posts",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "{{nickName}}", "posts"]
+						}
+					}
+				},
+				{
+					"name": "Get User Comments",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/users/{{nickName}}/comments",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "{{nickName}}", "comments"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Create Post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"Este es mi primer post!\",\n  \"user_nickName\": \"john_doe\",\n  \"images\": [\"https://ejemplo.com/imagen1.jpg\"],\n  \"tags\": [\"Tecnologia\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/posts",
+							"host": ["{{baseUrl}}"],
+							"path": ["posts"]
+						}
+					}
+				},
+				{
+					"name": "Get All Posts",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/posts",
+							"host": ["{{baseUrl}}"],
+							"path": ["posts"]
+						}
+					}
+				},
+				{
+					"name": "Get Post by ID",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/posts/{{postId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["posts", "{{postId}}"]
+						}
+					}
+				},
+				{
+					"name": "Update Post",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"Descripción actualizada del post\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/posts/{{postId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["posts", "{{postId}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete Post",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{baseUrl}}/posts/{{postId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["posts", "{{postId}}"]
+						}
+					}
+				},
+				{
+					"name": "Add Image to Post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"url\": \"https://ejemplo.com/nueva-imagen.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/posts/{{postId}}/images",
+							"host": ["{{baseUrl}}"],
+							"path": ["posts", "{{postId}}", "images"]
+						}
+					}
+				},
+				{
+					"name": "Remove Image from Post",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{baseUrl}}/posts/{{postId}}/images/{{imageId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["posts", "{{postId}}", "images", "{{imageId}}"]
+						}
+					}
+				},
+				{
+					"name": "Add Tag to Post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"tag_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/posts/{{postId}}/tags",
+							"host": ["{{baseUrl}}"],
+							"path": ["posts", "{{postId}}", "tags"]
+						}
+					}
+				},
+				{
+					"name": "Remove Tag from Post",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{baseUrl}}/posts/{{postId}}/tags/{{tagId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["posts", "{{postId}}", "tags", "{{tagId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Create Comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"¡Muy buen post!\",\n  \"user_nickName\": \"john_doe\",\n  \"post_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/comments",
+							"host": ["{{baseUrl}}"],
+							"path": ["comments"]
+						}
+					}
+				},
+				{
+					"name": "Get All Comments",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/comments",
+							"host": ["{{baseUrl}}"],
+							"path": ["comments"]
+						}
+					}
+				},
+				{
+					"name": "Update Comment",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"Comentario editado!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/comments/{{commentId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["comments", "{{commentId}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete Comment",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{baseUrl}}/comments/{{commentId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["comments", "{{commentId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Tags",
+			"item": [
+				{
+					"name": "Create Tag",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Tecnologia\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tags",
+							"host": ["{{baseUrl}}"],
+							"path": ["tags"]
+						}
+					}
+				},
+				{
+					"name": "Get All Tags",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/tags",
+							"host": ["{{baseUrl}}"],
+							"path": ["tags"]
+						}
+					}
+				},
+				{
+					"name": "Delete Tag",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{baseUrl}}/tags/{{tagId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["tags", "{{tagId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Follow",
+			"item": [
+				{
+					"name": "Follow User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"follower_nickName\": \"john_doe\",\n  \"following_nickName\": \"jane_doe\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/follow",
+							"host": ["{{baseUrl}}"],
+							"path": ["follow"]
+						}
+					}
+				},
+				{
+					"name": "Unfollow User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"follower_nickName\": \"john_doe\",\n  \"following_nickName\": \"jane_doe\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/follow",
+							"host": ["{{baseUrl}}"],
+							"path": ["follow"]
+						}
+					}
+				}
+			]
+		}
+	]
+}
